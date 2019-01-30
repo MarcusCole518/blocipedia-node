@@ -4,6 +4,8 @@ const viewsFolder = path.join(__dirname, "..", "views");
 const bodyParser = require("body-parser");
 const expressValidator = require("express-validator");
 const session = require("express-session");
+const sgMail = require('@sendgrid/mail');
+
 const flash = require("express-flash");
 const passportConfig = require("./passport-config");
 // const logger = require('morgan');
