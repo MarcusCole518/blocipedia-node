@@ -16,7 +16,7 @@ describe('User', () => {
 
     describe('#create()', () => {
 
-      it("should create a User object with a valid email and passport", (done) => {
+        it("should create a User object with a valid email and passport", (done) => {
 
         User.create({
             email: "user@example.com",
@@ -31,9 +31,9 @@ describe('User', () => {
             console.log(err);
             done();
         });
-      });
+    });
 
-      it("should not create a user with invalid email or passport", (done) => {
+        it("should not create a user with invalid email or passport", (done) => {
 
         User.create({
             email: "It's-a me, Mario!",
@@ -46,9 +46,9 @@ describe('User', () => {
             expect(err.message).toContain("Validation error: must be a valid email");
             done();
           });
-      });
+    });
 
-      it("should not create a user with an email already taken", (done) => {
+        it("should not create a user with an email already taken", (done) => {
 
         User.create({
             email: "user@example.com",
