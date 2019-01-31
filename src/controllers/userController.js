@@ -18,11 +18,12 @@ module.exports = {
       };
 
       sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
       const msg = {
-        to: req.body.email,
-        from: 'mcolelittle@gmail.com',
-        subject: 'Thanks for Joining Blocipedia!',
-        text: 'The number one place to share information.',
+        to: 'test@example.com',
+        from: 'test@example.com',
+        subject: 'Sending with SendGrid is Fun',
+        text: 'and easy to do anywhere, even with Node.js',
         html: '<strong>and easy to do anywhere, even with Node.js</strong>',
       };
       sgMail.send(msg);
@@ -38,5 +39,27 @@ module.exports = {
           })
         }
       })
+    },
+
+    signInForm(req, res, next){
+      res.render("users/sign_in");
+    },
+
+    signIn(req, res, next){
+      passport.authenticate("local")(req, res, function () {
+        if(!req.user){
+          req.flash("notice", "Sign in failed. Please try again.")
+          res.redirect("/users/sign_in");
+        } else {
+          req.flash("notice", "You've successfully signed in!");
+          res.redirect("/");
+        }
+      })
+    },
+
+    signOut(req, res, next){
+      req.logout();
+      req.flash("notice", "You've successfully signed out!");
+      res.redirect("/");
     }
   }
