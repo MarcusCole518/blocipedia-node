@@ -16,7 +16,7 @@ describe('User', () => {
 
     describe('#create()', () => {
 
-        it("should create a User object with a valid email and passport", (done) => {
+        it("should create a User object with a valid email and password", (done) => {
 
         User.create({
             email: "user@example.com",

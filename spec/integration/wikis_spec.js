@@ -60,4 +60,31 @@ describe('routes : wikis', () => {
             });
         });
     });
+
+    describe('POST /wikis/create', () => {
+        it("should create a new wiki and redirect", (done) => {
+            const options = {
+                url: `${base}create`,
+                form: {
+                    title: "Good Morning Revival",
+                    body: "Decent album I guess",
+                    private: false
+                }
+            };
+            request.post(options, (err, res, body) => {
+                Wiki.findOne({where: {title: "Good Morning Revival"}})
+                .then((wiki) => {
+                    expect(res.statusCode).toBe(303);
+                    expect(wiki.title).toBe("Good Morning Revival");
+                    expect(wiki.body).toBe("Decent album I guess");
+                    expect(wiki.private).toBe(false);
+                    done();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                });
+            });
+        });
+    });
 });
