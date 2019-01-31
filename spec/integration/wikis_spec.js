@@ -48,4 +48,16 @@ describe('routes : wikis', () => {
             });
         });
     });
+
+
+    describe("GET /wikis/new", () => {
+
+        it("should render a new wiki form", (done) => {
+            request.get(`${base}new`, (err, res, body) => {
+                expect(err).toBeNull();
+                expect(body).toContain("New Wiki");
+                done();
+            });
+        });
+    });
 });

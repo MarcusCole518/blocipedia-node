@@ -10,5 +10,9 @@ module.exports = {
                 res.render("wikis/index", {wikis});
             }
         })
+    },
+
+    new(req, res, next){
+        res.render("wikis/new");
     }
 }
