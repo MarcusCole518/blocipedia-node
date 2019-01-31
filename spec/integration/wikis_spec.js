@@ -118,4 +118,40 @@ describe('routes : wikis', () => {
             });
         });
     });
+
+
+    describe("GET /wikis/:id/edit", () => {
+
+        it("should render a view with an edit wiki form", (done) => {
+            request.get(`${base}${this.wiki.id}/edit`, (err, res, body) => {
+                expect(err).toBeNull();
+                expect(body).toContain("Edit Wiki");
+                expect(body).toContain("My first wiki");
+                done();
+            });
+        });
+    });
+
+    describe("POST /wikis/:id/update", () => {
+
+        it("should update the wiki with the given values", (done) => {
+            const options = {
+                url: `${base}${this.wiki.id}/update`,
+                form: {
+                    title: "My second wiki",
+                    description: "still an example wiki"
+                }
+            };
+            request.post(options, (err, res, body) => {
+                expect(err).toBeNull();
+                Wiki.findOne({
+                    where: { id: this.wiki.id }
+                })
+                .then((wiki) => {
+                    expect(wiki.title).toBe("My second wiki");
+                    done();
+                });
+            });
+        });
+    });
 });
