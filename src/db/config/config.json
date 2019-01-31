@@ -25,6 +25,6 @@
     "dialect": "postgres",
     "logging": false,
     "operatorsAliases": false,
-    "use_env_variable": "postgres://rfdzoqryyuppgd:20fb2f7824aa0e025b473cde7531b280dd5e79b7d1fdea735c8a8ec7fa39dc1e@ec2-54-243-228-140.compute-1.amazonaws.com:5432/d9sjgpjg0c3fnm"
+    "use_env_variable": "postgres://fqjmxzxspybdri:c86735f3dd819fc16ca71298146615c81d2f4cdb0e032a255347992b15353e6a@ec2-54-235-68-3.compute-1.amazonaws.com:5432/dagutfi95ld4p5"
   }
 }
