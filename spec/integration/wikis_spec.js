@@ -161,7 +161,7 @@ describe('routes : wikis', () => {
                 url: `${base}${this.wiki.id}/update`,
                 form: {
                     title: "My second wiki",
-                    description: "still an example wiki",
+                    body: "still an example wiki",
                     private: false,
                     userId: this.user.id
                 }
