@@ -145,7 +145,7 @@ describe('routes : wikis', () => {
             request.post(options, (err, res, body) => {
                 expect(err).toBeNull();
                 Wiki.findOne({
-                    where: { id: this.wiki.id }
+                    where: { id: 1 }
                 })
                 .then((wiki) => {
                     expect(wiki.title).toBe("My second wiki");
