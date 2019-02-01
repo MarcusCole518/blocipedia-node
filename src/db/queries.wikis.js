@@ -50,18 +50,23 @@ module.exports = {
     },
 
     updateWiki(id, updatedWiki, callback){
+        console.log(updatedWiki)
         return Wiki.findById(id)
         .then((wiki) => {
             if(!wiki){
+                console.log("wikiQuery could not find wiki:")
                 return callback("Wiki not found");
             }
             wiki.update(updatedWiki, {
                 fields: Object.keys(updatedWiki)
             })
             .then(() => {
+                console.log("wikiQuery updated wiki:")
+                console.log(updatedWiki);
                 callback(null, wiki);
             })
             .catch((err) => {
+                console.log("wikiQuery encountered error:")
                 callback(err);
             });
         });

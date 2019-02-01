@@ -86,6 +86,28 @@ describe('routes : wikis', () => {
                 });
             });
         });
+
+        it("should not create a new wiki that fails validations", (done) => {
+            const options = {
+                url: `${base}create`,
+                form: {
+                    title: "a",
+                    body: "b",
+                    private: false
+                }
+            };
+            request.post(options, (err, res, body) => {
+                Wiki.findOne({where: {title: "a"}})
+                .then((wiki) => {
+                    expect(wiki).toBeNull();
+                    done();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    done();
+                });
+            });
+        });
     });
 
     describe("GET /wikis/:id", () => {
@@ -139,7 +161,9 @@ describe('routes : wikis', () => {
                 url: `${base}${this.wiki.id}/update`,
                 form: {
                     title: "My second wiki",
-                    description: "still an example wiki"
+                    body: "still an example wiki",
+                    private: false,
+                    userId: this.user.id
                 }
             };
             request.post(options, (err, res, body) => {
