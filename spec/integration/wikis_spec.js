@@ -161,7 +161,9 @@ describe('routes : wikis', () => {
                 url: `${base}${this.wiki.id}/update`,
                 form: {
                     title: "My second wiki",
-                    description: "still an example wiki"
+                    description: "still an example wiki",
+                    private: false,
+                    userId: this.user.id
                 }
             };
             request.post(options, (err, res, body) => {

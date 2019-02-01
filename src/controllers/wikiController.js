@@ -71,7 +71,7 @@ module.exports = {
                 console.dir(err);
                 res.redirect(404, `/wikis/${req.params.id}/edit`);
             } else {
-                res.redirect(`${wiki.id}`);
+                res.redirect(`/wikis/${wiki.id}`);
             }
         });
     }
