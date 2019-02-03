@@ -43,7 +43,25 @@
                     </div>
                 </section>
             </section>
-            </div>
+
+            <br>
+
+            <% if(currentUser && currentUser.role === 0) { %>
+                <section class="col-lg-4">
+                        <div class="card" style="width: 55rem; padding: 5px;">
+                            <div class="card-body">
+                                    <a href="/users/<%=currentUser.id%>/upgrade" class="btn btn-primary">Upgrade Account</a>
+                                    <br>
+                                    <div class="card-text">Become a Premium Member, and unlock private wikis.</div>
+                            </div>
+                        </div>
+                </section>
+            <% } %>
+
+            <% if(currentUser && currentUser.role === 1) { %>
+                <a href= "/users/<%=currentUser.id%>/downgrade" class="btn btn-primary">Downgrade Account</a>
+            <% } %>
+        </div>
 
         <% include ./partials/baseScripts.ejs %>
     </body>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../static/partials/head.ejs %>
+    </head>
+    <body>
+        <% include ../static/partials/navbar.ejs %>
+
+        <main class="container">
+            <% include ../static/partials/messages.ejs %>
+
+            <h2>Downgrade Account</h2>
+            <form action="/users/<%= currentUser.id %>/downgrade" method="POST">
+                <button type="submit" class="btn btn-danger">Downgrade</button>
+            </form>
+            <small>We're sad to see you go!</small>
+        </main>
+    </body>
+</html>

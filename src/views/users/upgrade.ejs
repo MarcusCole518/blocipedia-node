@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../static/partials/head.ejs %>
+    </head>
+    <body>
+        <% include ../static/partials/navbar.ejs %>
+
+        <div class="container register-form">
+                <div class="form">
+                    <div class="note">
+                        <p>Upgrade to Premium</p>
+                    </div>
+                    <form method="POST" action="/users/<%= currentUser.id %>/upgrade" method="POST">
+                        <script
+                            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                            data-key="pk_test_5uSU9v16VMqqgppid0t9TZ1V"
+                            data-amount="1500"
+                            data-name="Upgrade to Premium"
+                            data-description="Gain Access to Private Wikis"
+                            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                            data-locale="auto"
+                            data-currency = "usd">
+                        </script>
+                    </form>
+                </div>
+            </div>
+    </body>
+</html>

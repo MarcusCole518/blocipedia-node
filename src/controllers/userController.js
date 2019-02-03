@@ -61,5 +61,49 @@ module.exports = {
       req.logout();
       req.flash("notice", "You've successfully signed out!");
       res.redirect("/");
+    },
+
+    upgradeForm(req, res, next){
+      res.render("users/upgrade");
+    },
+
+    upgrade(req, res, next){
+      var stripe = require("stripe")("sk_test_h8JjTiNxk3fnriPAs9rnTi5F");
+
+      const token = req.body.stripeToken;
+      const charge = stripe.charges.create({
+        amount: 1500,
+        currency: 'usd',
+        description: 'Upgrade Charge',
+        source: token,
+        statement_descriptor: "User Upgrade",
+        capture: false,
+      });
+
+      userQueries.upgrade(req.params.id, (err, user) => {
+        if(err){
+          req.flash("Payment was unsuccessful. Please try again later.");
+          res.redirect("/users/upgrade");
+        } else {
+          req.flash("notice", "Thank you for becoming a Premium Member! You can now create private wikis.");
+          res.redirect("/");
+        }
+      })
+    },
+
+    downgradeForm(req, res, next){
+      res.render("users/downgrade");
+    },
+
+    downgrade(req, res, next){
+      userQueries.downgrade(req.params.id, (err, user) => {
+        if(err){
+          req.flash("notice", "Downgrade unsuccessful. Please try again.");
+          res.redirect("/users/downgrade");
+        } else {
+          req.flash("notice", "Downgrade successful. You are now a standard user.");
+          res.redirect("/");
+        }
+      })
     }
   }
