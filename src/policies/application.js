@@ -34,8 +34,11 @@ module.exports = class ApplicationPolicy {
     }
 
     edit() {
-        return this.new() &&
-        this.record && (this._isOwner() || this._isAdmin() || this._isPremium());
+        if(this.record.private == false){
+            return this.new();
+        } else {
+            return this.new() && this.record && (this._isPremium() || this._isAdmin())
+        }
     }
 
     update() {
@@ -43,6 +46,6 @@ module.exports = class ApplicationPolicy {
     }
 
     destroy() {
-        return this.update();
+        return this.new() && this._isAdmin();
     }
 }

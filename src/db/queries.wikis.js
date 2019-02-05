@@ -18,9 +18,11 @@ module.exports = {
         return Wiki.create({
             title: newWiki.title,
             body: newWiki.body,
-            private: newWiki.private
+            private: newWiki.private,
+            userId: newWiki.userId
         })
         .then((wiki) => {
+            console.log(wiki);
             callback(null, wiki);
         })
         .catch((err) => {
@@ -82,5 +84,23 @@ module.exports = {
                 callback("Forbidden");
             }
         });
+    },
+
+    publicizeWiki(id, callback){
+        return Wiki.all()
+        .then((wikis) => {
+            console.log(wikis);
+            if(!wikis) {
+                return callback("User has no wikis.")
+            }
+            wikis.forEach((wiki) => {
+                if(wiki.userId === id && wiki.private == true) {
+                    wiki.update({private:false}, {where: {id: wiki.userId}})
+                }
+            })
+        })
+        .catch((err) => {
+            callback(err);
+        })
     }
 }

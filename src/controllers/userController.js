@@ -3,7 +3,9 @@ const passport = require("passport");
 // const sgMail = require('@sendgrid/mail');
 const express = require('express');
 const router = express.Router();
-
+const wikiQueries = require("../db/queries.wikis");
+const User = require("../db/models").User;
+const Wiki = require("../db/models").Wiki;
 
 module.exports = {
     signUp(req, res, next){
@@ -101,9 +103,10 @@ module.exports = {
           req.flash("notice", "Downgrade unsuccessful. Please try again.");
           res.redirect("/users/downgrade");
         } else {
+          wikiQueries.publicizeWiki(req.params.id);
           req.flash("notice", "Downgrade successful. You are now a standard user.");
           res.redirect("/");
         }
-      })
+      });
     }
   }

@@ -4,8 +4,8 @@
     <% include ../static/partials/head.ejs %>
   </head>
   <body>
-    <main class="container">
       <% include ../static/partials/navbar.ejs %>
+    <main class="container">
 
       <h1>Wikis</h1>
 
@@ -13,11 +13,15 @@
         <a href="/wikis/new" class="btn btn-success">New Wiki</a>
       <% } %>
 
+        <hr>
+
       <ul class="list-group">
         <% wikis.forEach((wiki) => { %>
-          <li class="list-group-item">
-            <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
-          </li>
+          <% if((currentUser && wiki.private == false) || (currentUser && currentUser.isOwner )) { %>
+            <li class="list-group-item">
+              <a href="/wikis/<%= wiki.id %>"> <%= wiki.title %> </a>
+            </li>
+          <% } %>
         <% }) %>
       </ul>
     </main>

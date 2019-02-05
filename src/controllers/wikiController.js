@@ -13,6 +13,16 @@ module.exports = {
         })
     },
 
+    privateIndex(req, res, next) {
+        wikiQueries.getAllWikis((err, wikis) => {
+            if(err) {
+                res.redirect(500, "static/index");
+            } else {
+                res.render("wikis/private", {wikis})
+            }
+        })
+    },
+
     new(req, res, next){
 
         const authorized = new Authorizer(req.user).new();
@@ -35,7 +45,7 @@ module.exports = {
                 title: req.body.title,
                 body: req.body.body,
                 private: req.body.private,
-                userId: req.params.userId
+                userId: req.user.id
             };
 
             wikiQueries.addWiki(newWiki, (err, wiki) => {
@@ -68,7 +78,15 @@ module.exports = {
             if(err){
                 res.redirect(500, `/wikis/${req.params.id}`)
             } else {
-                res.redirect(303, "/wikis")
+
+                const authorized = new Authorizer(req.user, wiki).destroy();
+
+                if(authorized){
+                    res.redirect(303, "/wikis");
+                } else {
+                    req.flash("You are not authorized to do that.")
+                    res.redirect(`/wikis/${req.params.id}`)
+                }
             }
         });
     },

@@ -23,6 +23,18 @@
                 <textarea rows="8" class="form-control" name="body" placeholder="Share Something!"></textarea>
                 <small class="text-muted" id="bodyHelp">body must be 5 or more characters in length.</small>
             </div>
+            <% if(currentUser && (currentUser.role === 1 || currentUser.role === 2)) { %>
+                <div class="form-group">
+                    <label for="private">
+                        Status
+                    </label>
+                    <select name="private" class="form-control" style="width: 30%;">
+                        <option value=""></option>
+                        <option value="false">Public</option>
+                        <option value="true">Private</option>
+                    </select>
+                </div>
+            <% } %>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 

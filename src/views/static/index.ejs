@@ -57,12 +57,10 @@
                         </div>
                 </section>
             <% } %>
-
-            <% if(currentUser && currentUser.role === 1) { %>
+            <% if(currentUser && (currentUser.role === 1 || currentUser.role === 2)) { %>
                 <a href= "/users/<%=currentUser.id%>/downgrade" class="btn btn-primary">Downgrade Account</a>
             <% } %>
         </div>
-
         <% include ./partials/baseScripts.ejs %>
     </body>
 </html>

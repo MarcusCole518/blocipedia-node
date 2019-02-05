@@ -10,10 +10,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     private: {
+      defaultValue: false,
       type: DataTypes.BOOLEAN,
     },
     userId: {
       type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {});
   Wiki.associate = function(models) {
