@@ -89,13 +89,10 @@ module.exports = {
     publicizeWiki(id, callback){
         return Wiki.all()
         .then((wikis) => {
-            console.log(wikis);
-            if(!wikis) {
-                return callback("User has no wikis.")
-            }
             wikis.forEach((wiki) => {
-                if(wiki.userId === id && wiki.private == true) {
-                    wiki.update({private:false}, {where: {id: wiki.userId}})
+                if(wiki.userId == id && wiki.private == true) {
+                    console.log(wiki);
+                    wiki.update({private:false});
                 }
             })
         })
