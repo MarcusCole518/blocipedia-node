@@ -7,7 +7,7 @@
         <% include ../static/partials/navbar.ejs %>
 
         <main class="container">
-            <h1><%= wiki.title %></h1>
+            <h1><%- markdown.toHTML(wiki.title) %></h1>
 
             <% if(currentUser) { %>
                 <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit Wiki</a>
@@ -17,7 +17,7 @@
                 </form>
             <% } %>
 
-            <p><%= wiki.body %></p>
+            <p><%- markdown.toHTML(wiki.body) %></p>
         </main>
 
         <% include ../static/partials/baseScripts.ejs %>
