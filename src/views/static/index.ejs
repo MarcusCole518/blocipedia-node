@@ -53,12 +53,23 @@
                                     <a href="/users/<%=currentUser.id%>/upgrade" class="btn btn-primary">Upgrade Account</a>
                                     <br>
                                     <div class="card-text">Become a Premium Member, and unlock private wikis.</div>
+                                    <hr>
+                                    <small>User Account: Standard</small>
                             </div>
                         </div>
                 </section>
             <% } %>
-            <% if(currentUser && (currentUser.role === 1 || currentUser.role === 2)) { %>
-                <a href= "/users/<%=currentUser.id%>/downgrade" class="btn btn-primary">Downgrade Account</a>
+            <% if(currentUser && (currentUser.role === 1)) { %>
+                <div>
+                    <a href= "/users/<%=currentUser.id%>/downgrade" class="btn btn-primary">Downgrade Account</a>
+                    <hr>
+                    <small>User Account: Premium</small>
+                </div>
+            <% } %>
+            <% if(currentUser && (currentUser.role === 2)) { %>
+                <div>
+                    <small>Administrator Access</small>
+                </div>
             <% } %>
         </div>
         <% include ./partials/baseScripts.ejs %>

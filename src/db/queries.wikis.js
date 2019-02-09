@@ -17,12 +17,7 @@ module.exports = {
     },
 
     addWiki(newWiki, callback){
-        return Wiki.create({
-            title: newWiki.title,
-            body: newWiki.body,
-            private: newWiki.private,
-            userId: newWiki.userId
-        })
+        return Wiki.create(newWiki)
         .then((wiki) => {
             console.log(wiki);
             callback(null, wiki);
@@ -33,14 +28,29 @@ module.exports = {
     },
 
     getWiki(id, callback){
-        return Wiki.findById(id, {
+        let returned = {};
+        Wiki.findById(id, {
             include: [{
                 model: Collaborator,
                 as: "collaborators"
             }]
         })
         .then((wiki) => {
-            callback(null, wiki);
+            if(!wiki){
+                req.flash("notice", "No wiki found")
+                callback(404);
+            } else {
+                returned['wiki'] = wiki;
+
+                Collaborator.scope({ method: ['collabsFor', id]}).all()
+                .then((collaborators) => {
+                    returned['collaborators'] = collaborators;
+                    callback(null, returned);
+                })
+                .catch((err) => {
+                    callback(err);
+                })
+            }
         })
         .catch((err) => {
             console.log(err);

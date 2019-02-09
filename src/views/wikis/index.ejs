@@ -23,6 +23,14 @@
             </li>
           <% } %>
         <% }) %>
+        <hr>
+        <% wikis.forEach((wiki) => { %>
+          <% if((currentUser && wiki.private == true) && (currentUser && currentUser.isCollaborator)) { %>
+              <li class="list-group-item">
+                  <a href="/wikis/<%= wiki.id %>"> <%- wiki.title %> </a>
+              </li>
+          <% } %>
+      <% }) %>
       </ul>
     </main>
   </body>

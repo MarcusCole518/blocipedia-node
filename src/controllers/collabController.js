@@ -1,24 +1,11 @@
-const Collaborator = require("../db/models/").Collaborator;
-const Wiki = require("../db/models").Wiki;
-const User = require("../db/models").User;
 const collabQueries = require("../db/queries.collaborators");
-const userQueries = require("../db/queries.users");
-const wikiQueries = require("../db/queries.wikis");
 const Authorizer = require("../policies/application");
-const markdown = require('markdown').markdown;
+const wikiQueries = require("../db/queries.wikis");
+const User = require("../db/models").User;
+const Wiki = require("../db/models").Wiki;
+const markdown = require( "markdown" ).markdown;
 
 module.exports = {
-    index(req, res, next){
-
-        collabQueries.getAllCollaborators((err, collaborators) => {
-            if(err){
-                console.log(err);
-                res.redirect(500, '/');
-            } else {
-                res.render('collabs/index', {collaborators})
-            }
-        })
-    },
 
     new(req, res, next){
         const authorized = new Authorizer(req.user).new();
@@ -27,52 +14,56 @@ module.exports = {
             res.render('collabs/new', {wikiId: req.params.wikiId});
         } else {
             req.flash("notice", "You are not authorized to do that.");
-            res.redirect(`/wikis/${wiki.id}/collabs/${collab.id}`)
+            res.redirect(`/wikis/${req.params.wikiId}`)
         }
     },
 
     create(req, res, next){
-        User.findOne({where: {email: req.body.email}})
-        .then(user => {
-
-            if(!user){
-                req.flash("notice", "This user was not found. Please try again.");
-                res.redirect(`/wikis/${wiki.id}`)
+        collabQueries.addCollaborator(req, (err, collaborator) => {
+            if(err){
+                console.log(err);
+                req.flash("notice", "There was an error adding this collaborator. Please try again later.")
+                res.redirect(500, `/wikis/${req.params.wikiId}/collabs/new`);
             } else {
-                let newCollab = {
-                    email: req.body.email,
-                    userId: req.user.id,
-                    wikiId: req.params.id
-                };
-                collabQueries.addCollaborator(newCollab, (err, collaborator) => {
-                    if(err){
-                        res.redirect(500, '/collabs/new');
-                    } else {
-                        res.render('collabs/show', {collaborator});
-                    }
-                });
+                res.redirect(303, `/wikis/${req.params.wikiId}`);
             }
-        })
+        });
     },
 
     show(req, res, next){
-        collabQueries.getCollaborator(req.params.id, (err, collaborator) => {
-            if(err || collaborator == null){
+        wikiQueries.getWiki(req.params.wikiId, (err, returned) => {
+            wiki = returned['wiki'];
+            collaborators = returned['collaborators'];
+
+            if(err || returned.wiki == null){
                 res.redirect(404, '/');
             } else {
-                res.render('collabs/show', {collaborator});
+                const authorized = new Authorizer(req.user, wiki, collaborators).edit();
+
+                if(authorized){
+                    res.render("collabs/show", {wiki, markdown, collaborators});
+                } else {
+                    req.flash("notice", "You are not authorized to do that.");
+                    res.redirect(`/wikis/${req.params.wikiId}`)
+                }
             }
         });
     },
 
     destroy(req, res, next){
-        collabQueries.deleteCollaborator(req.params.id, (err, collaborator) => {
-            if(err){
-                res.redirect(err, `/wikis/${req.params.wikiId}/collabs/${req.params.id}`)
-            } else {
-                res.redirect(303, `/wikis/${req.params.wikiId}/collabs`)
-            }
-        })
+        if(req.user) {
+            collabQueries.deleteCollaborator(req.params.id, (err, collaborator) => {
+                if(err){
+                    console.log("error appeared -- ", err)
+                    req.flash("notice", "There was an error deleting this collaborator. Please try again.");
+                } else {
+                    res.redirect(req.headers.referer)
+                }
+            })
+        } else {
+            req.flash("notice", "You must be signed in to do that.");
+            res.redirect(req.headers.referer);
+        }
     }
 }
 

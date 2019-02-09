@@ -4,8 +4,7 @@ const passport = require("passport");
 const express = require('express');
 const router = express.Router();
 const wikiQueries = require("../db/queries.wikis");
-const User = require("../db/models").User;
-const Wiki = require("../db/models").Wiki;
+const markdown = require( "markdown" ).markdown;
 
 module.exports = {
     signUp(req, res, next){
@@ -14,6 +13,7 @@ module.exports = {
 
     create(req, res, next){
       let newUser = {
+        name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         passwordConfirmation: req.body.passwordConfirmation
@@ -22,11 +22,11 @@ module.exports = {
       // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
       // const msg = {
-      //   to: 'test@example.com',
-      //   from: 'test@example.com',
-      //   subject: 'Sending with SendGrid is Fun',
-      //   text: 'and easy to do anywhere, even with Node.js',
-      //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+      //   to: req.body.email,
+      //   from: 'mcolelittle@gmail.com',
+      //   subject: 'Welcome to Blocipedia!',
+      //   text: 'Log in and create a wiki to get started.',
+      //   html: '<strong>Log in and create a wiki to get started.</strong>',
       // };
       // sgMail.send(msg);
 
@@ -108,5 +108,19 @@ module.exports = {
           res.redirect("/");
         }
       });
+    },
+
+    showCollabs(req, res, next){
+      userQueries.getUser(req.user.id, (err, returned) => {
+        user = returned['user'];
+        collaborations = returned['collaborations'];
+
+        if(err || user == null){
+          console.log(err);
+          res.redirect(404, '/');
+        } else {
+          res.render('users/collabs', {user, markdown, collaborations});
+        }
+      })
     }
   }

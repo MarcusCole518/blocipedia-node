@@ -37,12 +37,12 @@ module.exports = class ApplicationPolicy {
     edit() {
         if(this.record.private == false){
             return this.new();
-        } else {
-            return this.new() && this.record && (this._isPremium() || this._isAdmin())
+        } else if(this.record.private == true) {
+            return this.new() && this.record && (this._isPremium() || this._isAdmin() || this._isStandard())
         }
     }
 
-    showCollaborators(){
+    showCollabs(){
         return this.edit();
     }
 
@@ -51,6 +51,6 @@ module.exports = class ApplicationPolicy {
     }
 
     destroy() {
-        return this.new() && this._isAdmin();
+        return this.new() && (this._isAdmin() || this._isOwner());
     }
 }

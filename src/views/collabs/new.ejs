@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../static/partials/head.ejs %>
+    </head>
+    <body>
+        <% include ../static/partials/navbar.ejs %>
+
+        <main class="container">
+                <% include ../static/partials/messages.ejs %>
+                <div class="container register-form">
+                        <div class="form">
+                            <div class="note">
+                                <p>New Collaborator</p>
+                            </div>
+                            <form method="POST" action="/wikis/<%= wikiId %>/collabs/create">
+                                <div class="form-content">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Username:</label>
+                                                <input type="email" name="email" placeholder="Enter Email" class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Add Collaborator"/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+        </main>
+        <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>

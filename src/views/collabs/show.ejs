@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../static/partials/head.ejs %>
+    </head>
+    <body>
+        <% include ../static/partials/navbar.ejs %>
+
+        <main class="container">
+            <% include ../static/partials/messages.ejs %>
+
+            <% if(wiki.private == true) { %>
+                <h3>Collaborators</h3>
+
+                <% if(collaborators) { %>
+                    <hr>
+                    <ul class="list-group">
+                        <% collaborators.forEach((collaborator) => { %>
+                            <li class="list-group-item">
+                                <%= collaborator.email %>
+                                <small>this user has collaborator access to this wiki.</small>
+                                <% if(currentUser && (currentUser.role === 2 || currentUser.role === 1)) { %>
+
+                                <% } %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } %>
+            <% } %>
+        </main>
+        <% include ../static/partials/baseScripts.ejs %>
+    </body>
+</html>
