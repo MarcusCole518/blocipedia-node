@@ -42,3 +42,4 @@ Blocipedia uses Stripe to accept credit card payments for upgrading user account
 * [Stripe](https://stripe.com/)
 * [Passport.js](http://www.passportjs.org/)
 ### Heroku
+See Live on [Heroku](https://marcuscole518-blocipedia.herokuapp.com/)
